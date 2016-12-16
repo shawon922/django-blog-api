@@ -1,0 +1,20 @@
+.messages ul {
+    list-style: none;
+}
+
+.post-create-div, .post-update-div {
+    margin-bottom: 20px;
+}
+
+.post-detail p {
+    margin-top: 10px;
+}
+
+.wmd-panel {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+.comment-reply {
+    display: none;
+}
