@@ -1,2 +1,2 @@
-# django-blog
-A simple blogging app using Django 1.10.
+# django-blog-api
+A simple API built with "Django Rest Framework (DRF)" for "django-blog".
