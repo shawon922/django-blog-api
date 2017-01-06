@@ -72,6 +72,10 @@ def create_comment_serializer(model_type='post', slug=None, parent_id=None, user
 
 
 class CommentSerializer(ModelSerializer):
+    url = HyperlinkedIdentityField(
+        view_name='posts-api:detail',
+        lookup_field='slug'
+    )
     reply_count = SerializerMethodField()
 
     class Meta:
@@ -81,6 +85,29 @@ class CommentSerializer(ModelSerializer):
             'content_type',
             'object_id',
             'parent',
+            'content',
+            'reply_count',
+            'timestamp',
+        ]
+
+    def get_reply_count(self, obj):
+        if obj.is_parent:
+            return obj.children().count()
+        return 0
+
+
+class CommentListSerializer(ModelSerializer):
+    url = HyperlinkedIdentityField(
+        view_name='comments-api:thread',
+        lookup_field='pk'
+    )
+    reply_count = SerializerMethodField()
+
+    class Meta:
+        model = Comment
+        fields = [
+            'url',
+            'id',
             'content',
             'reply_count',
             'timestamp',
@@ -105,18 +132,25 @@ class CommentChildSerializer(ModelSerializer):
 class CommentDetailSerializer(ModelSerializer):
     reply_count = SerializerMethodField()
     replies = SerializerMethodField()
+    content_object_url = SerializerMethodField()
 
     class Meta:
         model = Comment
         fields = [
             'id',
-            'content_type',
-            'object_id',
             'content',
             'reply_count',
             'replies',
             'timestamp',
+            'content_object_url',
         ]
+        read_only_fields = [
+            'reply_count',
+            'replies',
+        ]
+
+    def get_content_object_url(self, obj):
+        return obj.content_object.get_api_url()
 
     def get_replies(self, obj):
         if obj.is_parent:
@@ -127,15 +161,3 @@ class CommentDetailSerializer(ModelSerializer):
         if obj.is_parent:
             return obj.children().count()
         return 0
-
-
-class CommentEditSerializer(ModelSerializer):
-
-    class Meta:
-        model = Comment
-        fields = [
-            'id',
-            'content',
-            'timestamp',
-        ]
-
