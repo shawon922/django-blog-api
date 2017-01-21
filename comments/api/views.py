@@ -51,7 +51,7 @@ class CommentCreateAPIView(CreateAPIView):
 class CommentDetailAPIView(UpdateModelMixin, DestroyModelMixin, RetrieveAPIView):
     queryset = Comment.objects.filter(id__gte=0)
     serializer_class = CommentDetailSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsOwnerOrReadOnly]
 
     def put(self, request, *args, **kwargs):
         return self.update(request, *args, **kwargs)
@@ -59,27 +59,9 @@ class CommentDetailAPIView(UpdateModelMixin, DestroyModelMixin, RetrieveAPIView)
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
 
-#
-#
-# class PostUpdateAPIView(RetrieveUpdateAPIView):
-#     queryset = Post.objects.all()
-#     serializer_class = PostCreateUpdateSerializer
-#     lookup_field = 'slug'
-#     permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
-#
-#     def perform_update(self, serializer):
-#         serializer.save(user=self.request.user)
-#
-#
-# class PostDeleteAPIView(RetrieveDestroyAPIView):
-#     queryset = Post.objects.all()
-#     serializer_class = PostDetailSerializer
-#     lookup_field = 'slug'
-#     permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
-
 
 class CommentListAPIView(ListAPIView):
-
+    permission_classes = [AllowAny]
     filter_backends = [SearchFilter, OrderingFilter]
     search_fields = ['content', 'user__username', 'user__first_name', 'user__last_name']
     serializer_class = CommentListSerializer

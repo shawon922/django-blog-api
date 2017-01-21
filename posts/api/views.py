@@ -27,13 +27,14 @@ from .serializers import PostCreateUpdateSerializer, PostListSerializer, PostDet
 class PostCreateAPIView(CreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostCreateUpdateSerializer
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
 
 class PostDetailAPIView(RetrieveAPIView):
+    permission_classes = [AllowAny]
     queryset = Post.objects.all()
     serializer_class = PostDetailSerializer
     lookup_field = 'slug'
@@ -44,7 +45,7 @@ class PostUpdateAPIView(RetrieveUpdateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostCreateUpdateSerializer
     lookup_field = 'slug'
-    permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
+    permission_classes = [IsOwnerOrReadOnly]
 
     def perform_update(self, serializer):
         serializer.save(user=self.request.user)
@@ -54,10 +55,11 @@ class PostDeleteAPIView(RetrieveDestroyAPIView):
     queryset = Post.objects.all()
     serializer_class = PostDetailSerializer
     lookup_field = 'slug'
-    permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
+    permission_classes = [IsOwnerOrReadOnly]
 
 
 class PostListAPIView(ListAPIView):
+    permission_classes = [AllowAny]
     # queryset = Post.objects.all()
     filter_backends = [SearchFilter, OrderingFilter]
     search_fields = ['title', 'content', 'user__username', 'user__first_name', 'user__last_name']
