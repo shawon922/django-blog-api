@@ -38,7 +38,7 @@
     </script>
 
 
-    <div class="container">
+    <div class="container" id="app">
         <ol class="breadcrumb">
             <li><a href="{% url 'posts:index' %}">Home</a></li>
             {% block post_detail_link %}
@@ -72,6 +72,13 @@
         {% endblock %}
     </div>
 
+    <script type="application/javascript" src="{{ STATIC_URL }}js/vuejs/vue.js"></script>
+    <script type="application/javascript" src="{{ STATIC_URL }}js/vuejs/vue-timeago.js"></script>
+    
+    <script type="application/javascript" src="{{ STATIC_URL }}js/vuejs/vue-resource.min.js"></script>
+    
+    <script type="application/javascript" src="{{ STATIC_URL }}js/custom/custom-vuejs.js"></script>
+
     <script type="application/javascript">
         $(document).ready(function() {
             $('.content-markdown').each(function() {
@@ -93,5 +100,6 @@
             });
         });
     </script>
+
 </body>
 </html>
