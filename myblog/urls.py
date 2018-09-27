@@ -20,6 +20,10 @@ from django.contrib import admin
 
 from rest_framework_jwt.views import obtain_jwt_token
 
+from .api.views import (
+    ResourceListViewSet
+)
+
 from accounts.views import (
         register_view,
         login_view,
@@ -38,6 +42,8 @@ urlpatterns = [
     url(r'^api/users/', include('accounts.api.urls', namespace='users-api')),
     url(r'^api/comments/', include('comments.api.urls', namespace='comments-api')),
     url(r'^api/posts/', include('posts.api.urls', namespace='posts-api')),
+    url(r'^api/', ResourceListViewSet.as_view({'get': 'list'}), name='api-resources'),
+    
 ]
 
 if settings.DEBUG:

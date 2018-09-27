@@ -59,6 +59,10 @@ class PostDeleteAPIView(RetrieveDestroyAPIView):
 
 
 class PostListAPIView(ListAPIView):
+    """
+    List:
+    Return a list of all the existing blog posts.
+    """
     permission_classes = [AllowAny]
     # queryset = Post.objects.all()
     filter_backends = [SearchFilter, OrderingFilter]

@@ -31,8 +31,8 @@ def index(request):
         'page_var': page_var
     }
 
-    # return render(request, 'posts/index.html', context)
-    return render(request, 'posts/index-vue.html', context)
+    return render(request, 'posts/index.html', context)
+    # return render(request, 'posts/index-vue.html', context)
 
 
 def create(request):
